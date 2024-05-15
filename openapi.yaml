@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: Formula 1 Drivers API
+  version: 1.0.0
+paths:
+  /api/drivers:
+    get:
+      summary: Get a list of all drivers
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: 1
+                  name: Lewis Hamilton
+                  wins: 95
+                  poles: 98
+                - id: 2
+                  name: Sebastian Vettel
+                  wins: 53
+                  poles: 57
+                - id: 3
+                  name: Ayrton Senna
+                  wins: 41
+                  poles: 65
+    post:
+      summary: Add a new driver
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Driver'
+      responses:
+        '201':
+          description: Driver added successfully
+          content:
+            application/json:
+              example:
+                id: 4
+                name: Max Verstappen
+                wins: 10
+                poles: 5
+  /api/drivers/{driver_id}:
+    parameters:
+      - name: driver_id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get details of a specific driver
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Lewis Hamilton
+                wins: 95
+                poles: 98
+    patch:
+      summary: Update driver details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverUpdates'
+      responses:
+        '200':
+          description: Driver updated successfully
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Lewis Hamilton
+                wins: 96
+                poles: 98
+    delete:
+      summary: Delete a driver
+      responses:
+        '200':
+          description: Driver deleted successfully
+          content:
+            application/json:
+              example:
+                message: Driver deleted
+components:
+  schemas:
+    Driver:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        wins:
+          type: integer
+        poles:
+          type: integer
+    DriverUpdates:
+      type: object
+      properties:
+        wins:
+          type: integer
+        poles:
+          type: integer
