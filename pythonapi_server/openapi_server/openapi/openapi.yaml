@@ -1,0 +1,156 @@
+openapi: 3.0.0
+info:
+  title: Formula 1 Drivers API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /api/drivers:
+    get:
+      operationId: api_drivers_get
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - id: 1
+                name: Lewis Hamilton
+                wins: 95
+                poles: 98
+              - id: 2
+                name: Sebastian Vettel
+                wins: 53
+                poles: 57
+              - id: 3
+                name: Ayrton Senna
+                wins: 41
+                poles: 65
+          description: Successful response
+      summary: Get a list of all drivers
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    post:
+      operationId: api_drivers_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Driver'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              example:
+                id: 4
+                name: Max Verstappen
+                wins: 10
+                poles: 5
+          description: Driver added successfully
+      summary: Add a new driver
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /api/drivers/{driver_id}:
+    delete:
+      operationId: api_drivers_driver_id_delete
+      parameters:
+      - explode: false
+        in: path
+        name: driver_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                message: Driver deleted
+          description: Driver deleted successfully
+      summary: Delete a driver
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    get:
+      operationId: api_drivers_driver_id_get
+      parameters:
+      - explode: false
+        in: path
+        name: driver_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Lewis Hamilton
+                wins: 95
+                poles: 98
+          description: Successful response
+      summary: Get details of a specific driver
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    patch:
+      operationId: api_drivers_driver_id_patch
+      parameters:
+      - explode: false
+        in: path
+        name: driver_id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverUpdates'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Lewis Hamilton
+                wins: 96
+                poles: 98
+          description: Driver updated successfully
+      summary: Update driver details
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Driver:
+      example:
+        wins: 6
+        poles: 1
+        name: name
+        id: 0
+      properties:
+        id:
+          title: id
+          type: integer
+        name:
+          title: name
+          type: string
+        wins:
+          title: wins
+          type: integer
+        poles:
+          title: poles
+          type: integer
+      title: Driver
+      type: object
+    DriverUpdates:
+      example:
+        wins: 0
+        poles: 6
+      properties:
+        wins:
+          title: wins
+          type: integer
+        poles:
+          title: poles
+          type: integer
+      title: DriverUpdates
+      type: object
